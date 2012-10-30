@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/gh-buttons.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="/css/font-awesome.css" type="text/css" media="screen" />
+
+    <link rel="icon" type="image/png" href="/images/favicon.png"/>
+
     {% block js %}
     {% endblock %}
   </head>
@@ -23,8 +26,9 @@
     <a href="{{ report_url }}" class="button pill big">
       <i class="icon-exclamation-sign"></i> Report an Issue</a>
 	</div>
+      <a href="/">
         <img id="logo" src="/images/logo.png" alt="Logo"/>
-        <a href="/"><h1 id="title">{{ title }}</h1></a>
+      </a>
       </header>
       <section id="content">
         {% block content %}
@@ -42,7 +46,7 @@
 	<li>
 	  <a href="/documentation">API</a>
 	</li>
-        <li>&copy; 2010-{% now "Y" %} <a href="http://www.twilio.com">Twilio Inc.</a></li>
+        <li>&copy; 2011-{% now "Y" %} <a href="http://www.ratchet.io">Ratchet Inc.</a></li>
       </ul>
       <ul class="right">
 	<li id="powered"><a href="http://www.stashboard.org">POWERED BY <img src="/images/poweredbystash.png" alt="stash!" /> STASHBOARD</a></li>
