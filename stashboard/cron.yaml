@@ -2,3 +2,15 @@ cron:
 - description: daily task to clean the frontpage
   url: /admin/tasks/invalidate-cache
   schedule: every day 00:01
+- description: check on http://ratchet.io every minute
+  url: /admin/tasks/ping/http://ratchet.io
+  schedule: every 1 minutes
+- description: check on https://ratchet.io every minute
+  url: /admin/tasks/ping/https://ratchet.io
+  schedule: every 1 minutes
+- description: check on http://submit.ratchet.io every minute
+  url: /admin/tasks/ping/http://submit.ratchet.io
+  schedule: every 1 minutes
+- description: check on https://submit.ratchet.io every minute
+  url: /admin/tasks/ping/https://submit.ratchet.io
+  schedule: every 1 minutes

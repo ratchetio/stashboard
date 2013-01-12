@@ -17,6 +17,8 @@ from utils import slugify
 import oauth2 as oauth
 import socket
 import urllib
+import urllib2
+import urlparse
 
 def default_template_data():
     td = site.default_template_data()
@@ -469,3 +471,47 @@ class InvalidateCacheHandler(site.BaseHandler):
     def get(self):
         api.invalidate_cache()
         self.response.out.write("Success")
+
+
+class PingHandler(site.BaseHandler):
+
+    def _save_result(self, site, level, message):
+        logging.info(site)
+        service = Service.get_by_slug(site)
+
+        if not service:
+            return
+
+        status = Status.get_by_slug(site)
+
+        if not site:
+            self.response.write("Status %s not found" % site)
+            return
+
+        e = Event(status=status, service=service, message=message)
+        e.informational = False
+        e.put()
+
+        invalidate_cache()
+
+    def get(self, site):
+        site = urlparse.unquote(site)
+        logging.info('PING HANDLER %r', site)
+
+        try:
+            response = urllib2.urlopen(site)
+        except Exception, e:
+            self._save_result(site,
+                              'critical',
+                              'Error checking %s, err: %s' % (site, e))
+            self.response.out.write("Fail")
+        else:
+            if response.code == 200:
+                self._save_result(site, 'ok', 'success')
+            else:
+                level = 'warning' if response.code / 100 == 4 else 'error'
+                self._save_result(site,
+                                  level,
+                                  'Got a %d while checking %s' % (response.code, site))
+
+            self.response.out.write("Success")
