@@ -9,8 +9,8 @@ cron:
   url: /admin/tasks/ping/https://ratchet.io
   schedule: every 1 minutes
 - description: check on http://submit.ratchet.io every minute
-  url: /admin/tasks/ping/http://submit.ratchet.io
+  url: /admin/tasks/ping/http://submit.ratchet.io/api/1/status/ping
   schedule: every 1 minutes
 - description: check on https://submit.ratchet.io every minute
-  url: /admin/tasks/ping/https://submit.ratchet.io
+  url: /admin/tasks/ping/https://submit.ratchet.io/api/1/status/ping
   schedule: every 1 minutes
