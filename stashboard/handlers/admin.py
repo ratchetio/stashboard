@@ -18,7 +18,6 @@ import oauth2 as oauth
 import socket
 import urllib
 import urllib2
-import urlparse
 
 def default_template_data():
     td = site.default_template_data()
@@ -476,27 +475,25 @@ class InvalidateCacheHandler(site.BaseHandler):
 class PingHandler(site.BaseHandler):
 
     def _save_result(self, site, level, message):
-        logging.info(site)
-        service = Service.get_by_slug(site)
+        service = Service.gql('WHERE name = :1', site).get()
 
         if not service:
             return
 
-        status = Status.get_by_slug(site)
+        status = Status.get_by_slug(level)
 
-        if not site:
-            self.response.write("Status %s not found" % site)
+        if not status:
+            self.response.out.write("Status %s not found" % site)
             return
 
         e = Event(status=status, service=service, message=message)
         e.informational = False
         e.put()
 
-        invalidate_cache()
+        api.invalidate_cache()
 
     def get(self, site):
-        site = urlparse.unquote(site)
-        logging.info('PING HANDLER %r', site)
+        site = urllib2.unquote(site)
 
         try:
             response = urllib2.urlopen(site)
